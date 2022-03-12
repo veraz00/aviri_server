@@ -20,8 +20,8 @@ curl -X POST \
 
 curl -X GET \
 -H "Accept: application/json" \
--d '{"id": "8705a944cc2449338955a752fa52a549"}' \
-"http://192.168.50.170:5050/api/v1/image?filename=103_left_cateract.jpg"  &id=1223443
+-d '{"id": "0b871ed82144466db451a05f88e58d25"}' \
+"http:/http://192.168.50.239:5050//api/v1/image"  &id=1223443
 
 curl -X GET \
 -H "Accept: application/json" \

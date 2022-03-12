@@ -8,34 +8,10 @@ from sqlalchemy.orm.exc import NoResultFound
 from app import db
 from common.error import HttpError
 from datetime import datetime 
-os.environ['DATA_DIR'] = './data/'
-import sys 
-sys.path.append('/Users/zenglinlin/Dev/linlin-server/')
 from ai.image_check import is_imglist
 
-class Image(db.Model):
-    __tablename__ = 'image'
+from app.models import Image
 
-    id = Column(String, primary_key=True)
-    filename = Column(String)
-    size = Column(Integer)
-    timestamp = Column(String)
-
-    all_fields = [ "id", "filename", "size", "timestamp" ]
-    create_fields = ["filename"]
-    update_fields = ["filename"]
-    filter_fields = ["filename"]
-
-    def __repr__(self):
-        return str(self.name)
-
-    def to_dict(self):
-        ret = {}
-        for prop in dir(self):
-            if prop.startswith("_") or prop not in Image.all_fields:
-                continue
-            ret[prop] = getattr(self, prop)
-        return ret
 
 class ImageController:
     def __init__(self):
@@ -45,16 +21,16 @@ class ImageController:
         if filename ==None:
             image = self.get(id)
             filename = image['filename']  # wer_retina_os_20220202_101010.jpg, wer_retina_os_20220202_101010_heatmap.jpg, 
-        if os.path.isabs(os.environ['DATA_DIR']):
-            filepath = os.path.join(os.environ['DATA_DIR'], id, filename)
+        if os.path.isabs(os.environ['INPUT_DIR']):
+            filepath = os.path.join(os.environ['INPUT_DIR'], id, filename)
         else:
-            filepath = os.path.join(os.getcwd(),os.environ['DATA_DIR'], id, filename)
+            filepath = os.path.join(os.getcwd(),os.environ['INPUT_DIR'], id, filename)
         if not os.path.isfile(filepath):
             filepath += Path(filename).suffix  # ??
         return filepath
     
     def write_file(self, id, filename, data):
-        path = os.path.join(os.environ['DATA_DIR'], id)
+        path = os.path.join(os.environ['INPUT_DIR'], id)
         if not os.path.exists(path):
             os.mkdir(path)
         if not os.path.exists(path):
@@ -72,7 +48,7 @@ class ImageController:
     
     def delete_file(self, id, filename=None):
         os.remove(self.get_filepath(id, filename))  # do I need to remove the id directory??
-        os.rmdir(os.path.join(os.environ['DATA_DIR'], id))
+        os.rmdir(os.path.join(os.environ['INPUT_DIR'], id))
         
     def create(self, record):  #  if the filename is the same as before; it would create a new one; instead of replacing the previous one??
         if record == None or 'content' not in record or 'filename' not in record:
@@ -143,7 +119,7 @@ class ImageController:
             setattr(img, "size", len(data))
             
         if "filename" in record:
-            os.rename(self.get_filepath(id, img.filename), os.path.join(os.environ['DATA_DIR'], id, record['filename']))
+            os.rename(self.get_filepath(id, img.filename), os.path.join(os.environ['INPUT_DIR'], id, record['filename']))
 
         for prop in dir(img):
             if prop.startswith("_"):

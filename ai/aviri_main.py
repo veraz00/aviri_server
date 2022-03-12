@@ -20,7 +20,6 @@ import cv2
 import torch.nn as nn
 import argparse
 import pydicom
-# from imgaug import augmenters as iaa
 import imgaug as ia
 import torch.nn.functional as F
 import tensorflow as tf
@@ -29,12 +28,11 @@ from tensorflow import keras
 from keras.models import load_model
 from keras.preprocessing import image
 import pickle
-from xgboost import XGBClassifier  # 0.82
+from xgboost import XGBClassifier  
 
 import h5py as h5
 from keras.models import Model
 from keras.optimizers import SGD
-# from keras.optimizers import gradient_descent_v2
 from keras.preprocessing import image
 from keras import backend as K
 import matplotlib.pyplot as plt
@@ -70,7 +68,7 @@ def get_aviri_prediction(img_locations, models_list, force_checking=True, modera
     prefer_GPU = True
 
 
-    if prefer_GPU:  # feng ge??
+    if prefer_GPU:  # not need use GPU here
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     else:
         device = 'cpu'
@@ -92,8 +90,6 @@ def get_aviri_prediction(img_locations, models_list, force_checking=True, modera
                 global_VI_ResNet50_graph = tf.get_default_graph()
                 
                 
-            # else:
-            #     global_model_classify_graph = tf.reset_default_graph()
             
             model_index = 1
             if global_feat_model == None:  
@@ -114,7 +110,7 @@ def get_aviri_prediction(img_locations, models_list, force_checking=True, modera
             
             
     end_time = time.time()
-    print('Loading models takes {} seconds' .format(end_time - start))  # 10s
+    print('Loading models takes {} seconds' .format(end_time - start))  # Time: 10s 
 
     if isinstance(img_locations, list):  #  a list of imgs path
         for img_location in img_locations:
@@ -122,7 +118,7 @@ def get_aviri_prediction(img_locations, models_list, force_checking=True, modera
                 err_dict["err_code"] = -2
                 err_dict["err_message"] = "Image file not found"
                 return err_dict
-    elif isinstance(img_locations, str):  # a string of img path pr img folder 
+    elif isinstance(img_locations, str):  # str: image path/image folder path
         if os.path.isdir(img_locations):
             img_paths = []
             for img in glob.glob(img_locations + '/*'):
@@ -130,15 +126,10 @@ def get_aviri_prediction(img_locations, models_list, force_checking=True, modera
             img_locations = img_paths
         else:
             img_locations = [os.path.abspath(img_locations)]
-    start_loadimage = time.time()
-    if len(img_locations) > 0:  # put the image quality checking within AI model?? feng ge
+    if len(img_locations) > 0:  
         X = loadImageList(img_locations, force_checking=force_checking)  # filename is images (np)
-        # imglist is a list of absolute images pathes
-        # filename is a list of numpy images
         print("input file number: ", len(X)) 
-        end_loadimage = time.time()
-        print('time for preparing image for model:',end_loadimage-start_loadimage)  # 0.06s 
-        
+     
         start_prediction = time.time()
         for num, imgs in enumerate(X):  # imgs is numpy
             img_location = img_locations[num]

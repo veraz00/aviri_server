@@ -4,7 +4,7 @@ import base64
 import uuid
 import os
 from flask import jsonify 
-from sqlalchemy import Binary, Column, Integer, String, text, Float
+from sqlalchemy import Binary, Column, Integer, String, text, 
 from sqlalchemy.orm.exc import NoResultFound
 from datetime import datetime 
 from app import db
@@ -15,33 +15,8 @@ from ai.aviri_main import get_aviri_AUC as calculate_auc
 
 lock = threading.Lock()
 
-class Prediction(db.Model):
-    __tablename__ = 'prediction'
-    
+from app.models import Prediction
 
-    filename = Column(String)
-    filename_id = Column(String, primary_key=True)
-    result = Column(String, nullable=False)
-    probability_VI0 = Column(Float, nullable=False)
-    probability_VI1 =Column(Float, nullable=False)
-    model_name = Column(String, primary_key=True, nullable=False)
-    heatmap_name = Column(String)
-    heatmap_name_id = Column(String)
-    timestamp = Column(String)
-
-    all_fields = [ "filename", "filename_id", "result", "probability_VI0", "prbability_VI1", \
-        "model_name", "heatmap_name", "heatmap_name_id","timestamp" ]
-
-    def __repr__(self):
-        return str(self.heatmap_name)
-
-    def to_dict(self):
-        ret = {}
-        for prop in dir(self):
-            if prop.startswith("_") or prop not in Prediction.all_fields:
-                continue
-            ret[prop] = getattr(self, prop)
-        return ret
 os.environ['HEATMAP_DIR'] = './heatmap'
 
 import cv2

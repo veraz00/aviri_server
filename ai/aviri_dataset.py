@@ -11,7 +11,7 @@ def readImageFile(FilewithPath):
     # we could repeat a few times in case the network file transder is not done
     
     img = None
-    fileName = os.path.basename(FilewithPath)  # home/data/sample_01.jpg
+    fileName = os.path.basename(FilewithPath)  
     ext_str = os.path.splitext(fileName)[1]  # jpg
     repeat_time = 3
 

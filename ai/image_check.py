@@ -20,8 +20,8 @@ def images_extension_valid(imglist):  # absolute path lists
             return True
         elif ext == '.tiff' or ext == '.TIFF':
             return True
-        # elif ext == '.dcm' or ext == '.dicom' or ext == '.DCM' or ext == '.DICOM':
-        #     return True
+        elif ext == '.dcm' or ext == '.dicom' or ext == '.DCM' or ext == '.DICOM':
+            return True
         else:
             return False
 
@@ -121,7 +121,7 @@ def is_imglist(imglist, force_checking = True):
 
         return err_dict
 
-    imglist = images_size_valid(imglist)  # 200*200 - 6000*6000
+    imglist = images_size_valid(imglist)   # 50KB - 18MB
     if len(imglist) < origin_len:
         err_dict["err_code"] = -4
         err_dict["err_message"] = "Image size out of range (50KB - 18MB)"

@@ -5,5 +5,3 @@ blueprint = Blueprint(
     __name__,
     url_prefix='/api'
 )
-
-# config['DOWNLOAD'] = './heatmap/'

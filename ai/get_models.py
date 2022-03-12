@@ -78,8 +78,8 @@ def feat_extract(model, img, index=1):
 
     return feat
 
-# FENG GE : question in color change in heatmap??
-def get_heatmap(model, imgs, class_val, resize, filename):  # from function in main_vi.py
+
+def get_heatmap(model, imgs, class_val, resize, filename):  
     # imgs is from loadImageList(img_locations, force_checking=force_checking) 
     orig_imgs = imgs.copy()
     imgs = cv2.cvtColor(imgs, cv2.COLOR_BGR2RGB)
