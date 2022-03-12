@@ -2,7 +2,7 @@ Steps to run AI server based on python3.7
 vir  # create virtual env python3.7
 pip install -r requirements.txt
 mkdir ai/model_files ## then add 3 model files into this folder 
-set FLASK_APP=manager
+set FLASK_APP=run
 
 python -m flask db init  # create db.sqlite
 python -m flask db migrate -m "init" 

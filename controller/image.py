@@ -10,8 +10,30 @@ from common.error import HttpError
 from datetime import datetime 
 from ai.image_check import is_imglist
 
-from app.models import Image
 
+class Image(db.Model):
+    __tablename__ = 'image'
+
+    id = Column(String, primary_key=True)
+    filename = Column(String)
+    size = Column(Integer)
+    timestamp = Column(String)
+
+    all_fields = [ "id", "filename", "size", "timestamp" ]
+    create_fields = ["filename"]
+    update_fields = ["filename"]
+    filter_fields = ["filename"]
+
+    def __repr__(self):
+        return str(self.name)
+
+    def to_dict(self):
+        ret = {}
+        for prop in dir(self):
+            if prop.startswith("_") or prop not in Image.all_fields:
+                continue
+            ret[prop] = getattr(self, prop)
+        return ret
 
 class ImageController:
     def __init__(self):
