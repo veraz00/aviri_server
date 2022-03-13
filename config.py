@@ -13,4 +13,3 @@ class DebugConfig(Config):
     DEBUG = True
     
 config_map = {'Production': ProductionConfig, 'Debug':DebugConfig}
-print('16 sqlite:///' + os.path.join(os.path.abspath(os.path.dirname(__file__)), 'db.sqlite3'))
