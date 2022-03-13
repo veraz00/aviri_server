@@ -1,10 +1,13 @@
 # Aviri_server
-This is a ai_server to provide VI disease prediction based on VI_CNN model.
+This is an ai_server to provide VI disease prediction based on VI_CNN model.
 
-## Steps to run AI server using python3.7 based on MAC
+## Steps to run AI server based on MAC
 ```
+# python3.7 
 pip install -r requirements.txt
 python app.py  # create db.sqlite
+
+# here I did not use migration in model, which is a necessity when running on windows; so suggest to run it on mac
 ```
 
 ## Curl command 
