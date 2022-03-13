@@ -58,12 +58,12 @@ curl -X GET \
 ### Time for prediction images
 
 1) load model: 10-12s
-2) prediction
-Time for get image:  0.0018 seconds <br>
-Loading models takes 5.8889e-05 seconds <br>
-Time for prediction: 0.7705 seconds <br>
-Time for writing in db:  0.01388 seconds <br>
-==>Time for generatePrediction() per image after loading model:  0.8950 seconds
+2) Time for get prediction per image:  0.8950 seconds <br>
+- Time for get image:  0.0018 seconds <br>
+- Loading models takes 5.8889e-05 seconds <br>
+- Time for prediction: 0.7705 seconds <br>
+- Time for writing in db:  0.01388 seconds <br>
+
 
 
 
