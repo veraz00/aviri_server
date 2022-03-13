@@ -1,4 +1,6 @@
-import os 
+import os
+import sys
+sys.path.append('..')
 import time 
 import uuid
 import base64
@@ -97,6 +99,7 @@ class ImageController:
         return img.to_dict()
     
     def query(self, params):
+        print('102 params', params)
         sql = "SELECT * FROM image"
         delimiter = " WHERE "
         cond = {}
@@ -118,6 +121,7 @@ class ImageController:
         return [ x.to_dict() for x in imgs ]
     
     def get(self, id):
+        print('input_dir', os.environ['INPUT_DIR'])
         try:
             sql = 'select * from image where id=:id'
             img = Image.query.from_statement(text(sql)).params(id=id).one()
@@ -162,3 +166,4 @@ class ImageController:
         db.session.commit()
 
         self.delete_file(id, getattr(img, "filename"))
+

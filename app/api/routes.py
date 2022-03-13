@@ -20,6 +20,7 @@ if not os.path.exists('input'):
 
 if not os.path.exists('heatmap'): 
     os.makedirs('heatmap', exist_ok=True) 
+    
 
 os.environ['INPUT_DIR'] = 'input/'
 os.environ['SAMPLE_DIR'] = 'samples/20_images/'
@@ -44,13 +45,22 @@ def before_request_fn():
 @blueprint.route('v1/home')  
 @exception_handler
 def Home():
-    return 'Hello, this is AVIRI-SERVER'
+    record = dict()
+    for file in os.listdir(os.environ['SAMPLE_DIR']):
+        record['filename'] = file
+        with open(os.path.join(os.environ['SAMPLE_DIR'], file), 'rb') as image1:
+            record['content'] = base64.b64encode(image1.read())
+
+            from controller.image import ImageController
+            from flask import g
+            g.image = ImageController()
+            g.image.create(record)
+    return "FAKE IMAGE HAS BEEN CREATED"
 
 
 @blueprint.route('/v1/image', methods = ['POST'])  # api/vi/image  
 @exception_handler
 def createImage():
-
     img = g.image.create(request.get_json())  
     return jsonify(img), 200
 
@@ -58,6 +68,7 @@ def createImage():
 @blueprint.route('/v1/image', methods=['GET'])  
 @exception_handler
 def get_images():
+    print('aa', request.args.to_dict())
     imgs = g.image.query(request.args.to_dict())  
     return jsonify(imgs), 200
 
@@ -66,6 +77,7 @@ def get_images():
 @exception_handler
 def getImageById(id):
     if request.method == 'GET':    
+        print('here')
         img = g.image.get(id)
         return jsonify(img), 200
     else:
@@ -83,7 +95,7 @@ def delete_image(id):
 @blueprint.route('/v1/image/download/<image_id>', methods=['GET'])    
 @exception_handler 
 def download_image(image_id):
-    aim_dir = os.path.join(os.environ['DATA_DIR'], image_id)
+    aim_dir = os.path.join(os.environ['INPUT_DIR'], image_id)
     for filename in os.listdir(aim_dir):
         aim_path = os.path.join(aim_dir, filename)
         img = Image.open(aim_path).convert('RGB')
