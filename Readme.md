@@ -2,7 +2,7 @@
 This is an ai_server to provide VI disease prediction based on VI_CNN model.
 
 ## Folder structure
-ai: ai model
+ai: ai model <br>
 samples: 20 images is downloaded from kaggle dataset; the other 5 images are from Retina camera
 
 
