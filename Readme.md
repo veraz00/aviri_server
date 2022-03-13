@@ -16,43 +16,43 @@ python app.py  # create db.sqlite
 ```
 
 ## Curl command 
-Example to curl api (Need to change ip address and id)
-
-- create fake image 
+Example to curl api (Need to change ip and image_id)
+```
+# create fake image 
 curl -X GET \
 -H "Accept: application/json" \
-"http://192.168.50.170:5050/api/v1/home"  
+"http://<ip>/api/v1/home"  
 
 
-- get image 
+# get image 
 curl -X GET \
 -H "Accept: application/json" \
-"http://192.168.50.170:5050/api/v1/image?id=<image_id>"
+"http://<ip>/api/v1/image?id=<image_id>"
 
 
-- delete image 
+# delete image 
 curl -X DELETE \
 -H "Content-Type: application/json" \
 "http://<ip>/api/v1/image/<image_id>"
 
 
-- download image 
+# download image 
 curl -X GET \
 -H "Accept: application/json" \
 "http://<ip>/api/v1/image/download/<image_id>"
 
 
-- get prediction/create prediction if filename not exists before
+# get prediction/create prediction if filename not exists before
 curl -X GET \
 -H "Content-Type: application/json" \
 "http://<ip>/api/v1/prediction/<image_id>/VI_CNN"
 
 
-- download heatmap
+# download heatmap
 curl -X GET \
 -H "Accept: application/json" \
 "http://<ip>/api/v1/heatmap/download/<heatmap_id>"
-
+```
 
 
 ### Time for prediction images
