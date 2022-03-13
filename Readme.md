@@ -10,6 +10,7 @@ samples: 20 images is downloaded from kaggle dataset; the other 5 images are fro
 ```
 # python3.7 
 python3.7 -m virtualenv py37-venv
+source py37-venv/bin/activate
 pip install -r requirements.txt
 python app.py  # create db.sqlite
 
