@@ -9,6 +9,7 @@ samples: 20 images is downloaded from kaggle dataset; the other 5 images are fro
 ## Steps to run AI server based on MAC
 ```
 # python3.7 
+python3.7 -m virtualenv py37-venv
 pip install -r requirements.txt
 python app.py  # create db.sqlite
 
