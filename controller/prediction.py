@@ -89,14 +89,10 @@ class PredictionController:
     def create(self, params):
         if "filename_id" not in params or "model_name" not in params:  # only for a single model_name
             raise HttpError("Invalid request data.", 400)
-        start_get = time.time()
         img = self.image.get(params["filename_id"]) 
-        end_get = time.time()
-        print('time for get image: ', end_get-start_get)  # 0.02s
+
         
         result = self.predict(img, model_name = params['model_name'])  
-        
-        start_db =  time.time()
         try:
             sql = "SELECT * FROM prediction WHERE filename_id=:filename_id and model_name=:model_name"
             prediction = Prediction.query.from_statement(text(sql)).params({'filename_id':params["filename_id"], 'model_name':params['model_name']}).one()
@@ -119,9 +115,6 @@ class PredictionController:
 
         db.session.add(prediction)
         db.session.commit()
-        # result = Prediction.query.filter_by(filename_id = params['filename_id'], model_name = params['model_name']).first()
-        end_db = time.time()
-        print('time for writing in db: ', end_db-start_db)  # 0.013s
         return prediction.to_dict() #  it would be a dict
 
     def auc(self, params):  # default: model_list = ['VI_CNN']

@@ -68,7 +68,6 @@ def createImage():
 @blueprint.route('/v1/image', methods=['GET'])  
 @exception_handler
 def get_images():
-    print('aa', request.args.to_dict())
     imgs = g.image.query(request.args.to_dict())  
     return jsonify(imgs), 200
 
@@ -77,7 +76,6 @@ def get_images():
 @exception_handler
 def getImageById(id):
     if request.method == 'GET':    
-        print('here')
         img = g.image.get(id)
         return jsonify(img), 200
     else:
@@ -107,14 +105,14 @@ def download_image(image_id):
 @blueprint.route('/v1/prediction/<id>/<model_name>', methods=['GET'])
 @exception_handler
 def generatePrediction(id, model_name):
-    start = time.time()
+    # start = time.time()
     try:
         pred = g.prediction.get(filename_id = id, model_name = model_name)
     except HttpError as e:
         params = {'filename_id':id, 'model_name':model_name}
         pred = g.prediction.create(params)  
-        end = time.time()
-        print('AI server time for generatePrediction() in route: ', end-start,'seconds')
+        # end = time.time()
+        # print('AI server time for generatePrediction() in route: ', end-start,'seconds')
     return jsonify(pred), 200
 
 

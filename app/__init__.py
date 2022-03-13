@@ -29,7 +29,6 @@ def create_app(config):
     
     Migrate(app, db)
     create_database(app)
-    register_commands(app)
                 
     return app
 

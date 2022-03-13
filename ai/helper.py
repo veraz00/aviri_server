@@ -56,7 +56,7 @@ def get_probability(Threshold_VI = [0.03111], Y_prob = [[0.03, 0.97]], models_li
         # pred_results["proba_others"] = None
         pred_result['result'] = class_result
         pred_result['model_name'] = 'VI_CNN'
-                        
+        print("Modified probability under threshold {0}: [{1}, {2}]".format(Threshold_VI[0],  probability_0,probability_1))             
     return pred_result
 
 

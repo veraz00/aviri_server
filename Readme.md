@@ -27,13 +27,13 @@ curl -X GET \
 - get image 
 curl -X GET \
 -H "Accept: application/json" \
-"http://192.168.50.170:5050/api/v1/image?id=e468c4d3ad8b4cbebcb93e4f8117c7d4"
+"http://192.168.50.170:5050/api/v1/image?id=5d3a70fd9303470bb2fadff860a76684"
 
 
 - delete image 
 curl -X DELETE \
 -H "Content-Type: application/json" \
-"http://192.168.50.170:5050/api/v1/image/0aa537b09c5c4d8ab482877c7f0635a8"
+"http://192.168.50.170:5050/api/v1/image/5d3a70fd9303470bb2fadff860a76684"
 
 
 - download image 
@@ -42,10 +42,10 @@ curl -X GET \
 "http://192.168.50.170:5050/api/v1/image/download/e468c4d3ad8b4cbebcb93e4f8117c7d4"
 
 
-- get prediction/create prediction if filename exists before
+- get prediction/create prediction if filename not exists before
 curl -X GET \
 -H "Content-Type: application/json" \
-"http://192.168.50.170:5050/api/v1/prediction/e468c4d3ad8b4cbebcb93e4f8117c7d4/VI_CNN"
+"http://192.168.50.170:5050/api/v1/prediction/ae3d04f33fd14e52961f46a569287feb/VI_CNN"
 
 
 - download heatmap

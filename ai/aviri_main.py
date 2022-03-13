@@ -157,7 +157,7 @@ def get_aviri_prediction(img_locations, models_list, force_checking=True, modera
                         class_val = 1
                     else:
                         class_val = 0
-                    print("AI model Softmax output for {0}: {1}\tclass: {2}".format(img_locations[num], preds, class_val))
+                    print("AI model Softmax output for {0} without any modification: {1}\tclass: {2}".format(img_locations[num], preds, class_val))
             # AI model Softmax output for ./inputs/111_tyj_Retina_OD_20220124_153145.jpg: [[0.98087865 0.01912132]]       class: 1
                     predict_result = get_probability(Y_prob = preds)
                     with global_heatmap_graph.as_default():
