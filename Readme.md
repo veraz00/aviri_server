@@ -16,7 +16,7 @@ pip install -r requirements.txt
 python -m flask db init 
 python -m flask db migrate -m "init"  # create db.sqlite3
 python -m flask db upgrade
-python app.py  # create db.sqlite
+python app.py  
 
 # here it would not show database if running on windows; so suggest to run it on mac
 ```
