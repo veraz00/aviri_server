@@ -1,6 +1,11 @@
 # Aviri_server
 This is an ai_server to provide VI disease prediction based on VI_CNN model.
 
+## Folder structure
+ai: ai model
+samples: 20 images is downloaded from kaggle dataset; the other 5 images are from Retina camera
+
+
 ## Steps to run AI server based on MAC
 ```
 # python3.7 
@@ -11,7 +16,8 @@ python app.py  # create db.sqlite
 ```
 
 ## Curl command 
-Need to change ip address and id
+Example to curl api (Need to change ip address and id)
+
 - create fake image 
 curl -X GET \
 -H "Accept: application/json" \
@@ -49,18 +55,15 @@ curl -X GET \
 
 
 
-## Folder examplanation
-samples: 20 images is downloaded from kaggle dataset; the other 5 images are from Retina camera
+### Time for prediction images
 
-
-## Time for prediction images
 1) load model: 10-12s
 2) prediction
-time for get image:  0.0018 seconds
-Loading models takes 5.8889e-05 seconds
-time for prediction: 0.7705 seconds
-time for writing in db:  0.01388 seconds
-==>time for generatePrediction() per image after loading model:  0.8950 seconds
+Time for get image:  0.0018 seconds <br>
+Loading models takes 5.8889e-05 seconds <br>
+Time for prediction: 0.7705 seconds <br>
+Time for writing in db:  0.01388 seconds <br>
+==>Time for generatePrediction() per image after loading model:  0.8950 seconds
 
 
 
