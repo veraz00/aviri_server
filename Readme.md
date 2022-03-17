@@ -27,37 +27,37 @@ Example to curl api (Need to change ip and image_id)
 # create fake image 
 curl -X GET \
 -H "Accept: application/json" \
-"http://<ip>/api/v1/home"  
+"http://192.168.50.239:5050/api/v1/home"  
 
 
 # get image 
 curl -X GET \
 -H "Accept: application/json" \
-"http://<ip>/api/v1/image?id=<image_id>"
+"http://192.168.50.239:5050/api/v1/image?id=<image_id>"
 
 
 # delete image 
 curl -X DELETE \
 -H "Content-Type: application/json" \
-"http://<ip>/api/v1/image/<image_id>"
+"http://192.168.50.239:5050/api/v1/image/<image_id>"
 
 
 # download image 
 curl -X GET \
 -H "Accept: application/json" \
-"http://<ip>/api/v1/image/download/<image_id>"
+"http://192.168.50.239:5050/api/v1/image/download/<image_id>"
 
 
 # get prediction/create prediction if filename not exists before
 curl -X GET \
 -H "Content-Type: application/json" \
-"http://<ip>/api/v1/prediction/<image_id>/VI_CNN"
+"http://192.168.50.239:5050/api/v1/prediction/595e979226e54d5ebe46d450ad10596b/VI_CNN"
 
 
 # download heatmap
 curl -X GET \
 -H "Accept: application/json" \
-"http://<ip>/api/v1/heatmap/download/<heatmap_id>"
+"http://192.168.50.239:5050/api/v1/heatmap/download/e7bb8362449e4584bf0231476f7ef2d5"
 ```
 
 
@@ -70,6 +70,8 @@ curl -X GET \
   - Time for prediction: 0.7705 seconds <br>
   - Time for writing in db:  0.01388 seconds <br>
 
-
-
+### Notes
+1) in get_heatmap
+if resize = True, then size of heatmap = 512, 512, 3; else heatmap would be original as image
+2) 
 

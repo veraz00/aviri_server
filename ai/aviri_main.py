@@ -162,7 +162,7 @@ def get_aviri_prediction(img_locations, models_list, force_checking=True, modera
                     predict_result = get_probability(Y_prob = preds)
                     with global_heatmap_graph.as_default():
                         heatmap_dict = get_heatmap(model = global_heatmap, imgs=orig_imgs, class_val = class_val,\
-                        resize = True, filename = filename) 
+                        resize = False, filename = filename) 
                     predict_result['heatmap_content'] = heatmap_dict['heatmap_content']  # numpy
                     predict_result['heatmap_name'] = heatmap_dict['heatmap_name']
                 else:

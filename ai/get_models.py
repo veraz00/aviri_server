@@ -105,6 +105,8 @@ def get_heatmap(model, imgs, class_val, resize, filename):
     # We use cv2 to load the original image
     if resize == True:
         img = cv2.resize(orig_imgs, (512, 512))
+    else:
+        img = orig_imgs
 
     # We resize the heatmap to have the same size as the original image
     heatmap = cv2.resize(heatmap, (img.shape[1], img.shape[0]))
@@ -115,10 +117,11 @@ def get_heatmap(model, imgs, class_val, resize, filename):
 
     # 0.4 here is a heatmap intensity factor
     superimposed_img = heatmap * 0.4 + img
+    print('heatmap', superimposed_img.shape)
 
-    final_img = np.concatenate((img, superimposed_img), axis=1)
+    # final_img = np.concatenate((img, superimposed_img), axis=1)
     # Save the image to disk
-    return {'heatmap_content':final_img, 'heatmap_name':os.path.splitext(filename)[0] + '_heatmap.jpg'}
+    return {'heatmap_content':superimposed_img, 'heatmap_name':os.path.splitext(filename)[0] + '_heatmap.jpg'}
 
 
 

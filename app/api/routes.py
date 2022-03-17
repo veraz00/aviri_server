@@ -128,8 +128,8 @@ def download_heatmap(heatmap_name_id):
         return jsonify({'heatmap_content': img_str}), 200
 
  
-@blueprint.route('/v1/auc', methods=['POST'])  # Not test yet??
+@blueprint.route('/v1/auc', methods=['GET'])  # Not test yet??
 @exception_handler
 def create_auc():
-    result = g.prediction.auc(request.get_json())
+    result = g.prediction.auc(request.get_json())  # {'images': [], 'labels':['1', '0', '1']}
     return jsonify(result)

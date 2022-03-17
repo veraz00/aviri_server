@@ -42,7 +42,7 @@ def images_size_valid(imglist, min_kB=50, max_kB=18432):
 
     for img in imglist:
         fsize = get_FileSize(img)
-        # print('image size bits', fsize)
+        print('image size bits', fsize)
         if fsize<min_kB or fsize>max_kB:
             imglist.remove(img)
 
