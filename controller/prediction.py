@@ -66,7 +66,7 @@ class PredictionController:
         try:
             resp = do_prediction(
             img_locations = self.image.get_filepath(img["id"], img["filename"]),
-            models_list = [model_name] #  ['VI_CNN']
+            models_list = [model_name] #  ['VI'] ['VI_Moderate']
             )[0]
             #  resp  = {'heatmap_content': a numpy, 'heatmap_name': _heatmap.jpg}
         finally:

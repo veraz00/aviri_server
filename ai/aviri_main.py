@@ -48,15 +48,16 @@ global_VI_ResNet50 = None
 global_heatmap = None
 global_feat_model = None
 
-def get_aviri_prediction(img_locations, models_list, force_checking=True, moderate_model=False, input_tests = None):
+def get_aviri_prediction(img_locations, models_list, force_checking=True, input_tests = None):
     global global_VI_ResNet50
     global global_heatmap
     global global_feat_model
     global global_VI_ResNet50_graph
     global global_heatmap_graph
     global global_feat_model_graph
+    global VI
+    global VI_Moderate
     
-    moderate_model = False
     start = time.time()
     model_fts = []
     predict_results = []
@@ -74,39 +75,42 @@ def get_aviri_prediction(img_locations, models_list, force_checking=True, modera
         device = 'cpu'
     
     for i, model_name in enumerate(models_list):
-        if model_name == 'VI_CNN':
-            if moderate_model:
-                cp_filepath = os.path.join(os.path.dirname(__file__), 'model_files', 'moderate_VI_ResNet50_retrain_LowRes_dataset0.dat')
-            else:
-                cp_filepath = os.path.join(os.path.dirname(__file__), 'model_files', 'VI_ResNet50_retrain_LowRes_dataset7_1st.dat')
 
-            cp_heatmap = os.path.join(os.path.dirname(__file__), 'model_files', 'best_model.h5')
+        cp_moderate_filepath = os.path.join(os.path.dirname(__file__), 'model_files', 'moderate_VI_ResNet50_retrain_LowRes_dataset0.dat')
+        VI_Moderate = pickle.load(open(cp_moderate_filepath, "rb"))
+        cp_filepath = os.path.join(os.path.dirname(__file__), 'model_files', 'VI_ResNet50_retrain_LowRes_dataset7_1st.dat')
+        VI =  pickle.load(open(cp_filepath, "rb"))
 
-            # keras.backend.clear_session()
-            
-            if global_VI_ResNet50 == None and moderate_model ==False:
-                global_VI_ResNet50 = pickle.load(open(cp_filepath, "rb"))
-                print("Loaded checkpoint '%s'." % cp_filepath)
-                global_VI_ResNet50_graph = tf.get_default_graph()
+        cp_heatmap = os.path.join(os.path.dirname(__file__), 'model_files', 'best_model.h5')
+
+        # keras.backend.clear_session()
+        print('model_name:', model_name)
+        if model_name == 'VI' and global_VI_ResNet50 != VI:
+            global_VI_ResNet50 = VI
                 
-                
+        if model_name == 'VI_Moderate' and global_VI_ResNet50 != VI_Moderate:
+            global_VI_ResNet50 = VI_Moderate
+        print("Loaded checkpoint '%s'." % cp_filepath)
+        global_VI_ResNet50_graph = tf.get_default_graph()
+        
             
-            model_index = 1
-            if global_feat_model == None:  
-                print('global_feat_model')    
-                global_feat_model = get_model(model_index)
-                global_feat_model_graph = tf.get_default_graph()
-            # else:
-            #     global_feat_model_graph = tf.reset_default_graph()
-            
-            if global_heatmap == None:
-                print('global_heatmap')
-                global_heatmap = load_model(cp_heatmap)
-                global_heatmap_graph = tf.get_default_graph()  
-            # else:  
-            #     global_feature_model_1_graph = tf.reset_default_graph()   
+        
+        model_index = 1
+        if global_feat_model == None:  
+            print('global_feat_model')    
+            global_feat_model = get_model(model_index)
+            global_feat_model_graph = tf.get_default_graph()
+        # else:
+        #     global_feat_model_graph = tf.reset_default_graph()
+        
+        if global_heatmap == None:
+            print('global_heatmap')
+            global_heatmap = load_model(cp_heatmap)
+            global_heatmap_graph = tf.get_default_graph()  
+        # else:  
+        #     global_feature_model_1_graph = tf.reset_default_graph()   
 
-            model_fts.append(global_VI_ResNet50)  # model_fts is only for resent50 
+        model_fts.append(global_VI_ResNet50)  # model_fts is only for resent50 
             
             
     end_time = time.time()
@@ -142,7 +146,7 @@ def get_aviri_prediction(img_locations, models_list, force_checking=True, modera
             for i in range(len(models_list)):
                 model_name = models_list[i]
                 model = model_fts[i]
-                if model_name == 'VI_CNN':
+                if model_name == 'VI' or 'VI_CNN':
                     orig_imgs = imgs.copy()
                     imgs = cv2.cvtColor(imgs, cv2.COLOR_BGR2RGB)
                     imgs = cv2.resize(imgs, (224, 224))
