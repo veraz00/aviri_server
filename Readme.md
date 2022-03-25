@@ -73,5 +73,10 @@ curl -X GET \
 ### Notes
 1) in get_heatmap
 if resize = True, then size of heatmap = 512, 512, 3; else heatmap would be original as image
-2) 
+2) git remote remove <remote path>
 
+git remote add origin <your git repo http path>
+git push origin master
+git remote add origin https://github.com/veraz00/aviri_server.git
+git branch -M main
+git push -u origin main

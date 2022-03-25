@@ -88,7 +88,7 @@ class PredictionController:
 
     def create(self, params):
         if "filename_id" not in params or "model_name" not in params:  # only for a single model_name
-            raise HttpError("Invalid request data.", 400)
+            raise HttpError("Missing Field", 400)
         img = self.image.get(params["filename_id"]) 
 
         

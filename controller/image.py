@@ -51,6 +51,7 @@ class ImageController:
             filepath = os.path.join(os.getcwd(),os.environ['INPUT_DIR'], id, filename)
         if not os.path.isfile(filepath):
             filepath += Path(filename).suffix  # ??
+        print('filepath', filepath)
         return filepath
     
     def write_file(self, id, filename, data):
@@ -71,12 +72,15 @@ class ImageController:
 
     
     def delete_file(self, id, filename=None):
-        os.remove(self.get_filepath(id, filename))  # do I need to remove the id directory??
-        os.rmdir(os.path.join(os.environ['INPUT_DIR'], id))
+        try:
+            os.remove(self.get_filepath(id, filename))  # do I need to remove the id in database??
+            os.rmdir(os.path.join(os.environ['INPUT_DIR'], id))
+        except:
+            raise HttpError("Image not existing", 404)
         
     def create(self, record):  #  if the filename is the same as before; it would create a new one; instead of replacing the previous one??
         if record == None or 'content' not in record or 'filename' not in record:
-            raise HttpError('Invalid request data', 400)
+            raise HttpError('Missing Field', 400)
         # image checking 
         img = Image(id = uuid.uuid4().hex)        
         data = base64.b64decode(record["content"])  #  convert a imgstring into an image
@@ -99,34 +103,36 @@ class ImageController:
         return img.to_dict()
     
     def query(self, params):
-        print('102 params', params)
-        sql = "SELECT * FROM image"
-        delimiter = " WHERE "
-        cond = {}
-        for p in params:
-            if p in Image.all_fields:
-                sql += delimiter + p+"=:"+p
-                delimiter = " AND "
-                cond[p] = params[p]
-        if "_filter" in params:
-            cond["filter"] = "%"+params["_filter"]+"%"
-            fdelimiter = "("
-            for field in Image.filter_fields:
-                sql += delimiter + fdelimiter + field + " like :filter"
-                delimiter = ""
-                fdelimiter = " OR "
-            sql += ")"
+        try: 
+            sql = "SELECT * FROM image"
+            delimiter = " WHERE "
+            cond = {}
+            for p in params:
+                if p in Image.all_fields:
+                    sql += delimiter + p+"=:"+p
+                    delimiter = " AND "
+                    cond[p] = params[p]
+            # if "_filter" in params:
+            #     cond["filter"] = "%"+params["_filter"]+"%"
+            #     fdelimiter = "("
+            #     for field in Image.filter_fields:
+            #         sql += delimiter + fdelimiter + field + " like :filter"
+            #         delimiter = ""
+            #         fdelimiter = " OR "
+            #     sql += ")"
 
-        imgs = Image.query.from_statement(text(sql)).params(**cond).all()
-        return [ x.to_dict() for x in imgs ]
+            imgs = Image.query.from_statement(text(sql)).params(**cond).all()
+        except NoResultFound as e:
+            raise HttpError("Service Unavailable", 503)
+        return [x.to_dict() for x in imgs]
+        
     
     def get(self, id):
-        print('input_dir', os.environ['INPUT_DIR'])
         try:
             sql = 'select * from image where id=:id'
             img = Image.query.from_statement(text(sql)).params(id=id).one()
         except NoResultFound as e:
-            raise HttpError('No image Found', 404)
+            raise HttpError('Image Not Found', 404)
         return img.to_dict()
     
     def update(self, id, record):
@@ -134,7 +140,12 @@ class ImageController:
             sql = 'select * from image where id=:id'
             img = Image.query.from_statement(text(sql)).params(id=id).one()
         except NoResultFound as e:
-            raise HttpError('No image found.', 404)
+            raise HttpError('Image Not Found', 404)
+        print(list(record.keys()))
+        list1 = list(record.keys())
+        list2 = ['filename','content']
+        if not any(e in list2 for e in list1):
+            raise HttpError('Unsupported Service', 404)
         
         if "content" in record:
             data = base64.b64decode(record["content"])
@@ -159,8 +170,9 @@ class ImageController:
         try:
             sql = "SELECT * FROM image WHERE id=:id"
             img = Image.query.from_statement(text(sql)).params(id=id).one()
+            print('id: ', id)
         except NoResultFound as e:
-            raise HttpError("No image found.", 404)
+            raise HttpError("Image Not Found", 404)
 
         db.session.delete(img)
         db.session.commit()

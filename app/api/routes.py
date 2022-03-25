@@ -3,7 +3,7 @@ import sys
 import os 
 from flask import request, make_response, Response, jsonify, current_app, g, send_from_directory, send_file, safe_join, abort
 sys.path.append('..')
-print('os.getcwd()', os.getcwd())  # so the system path: aviri_server
+# print('os.getcwd()', os.getcwd())  # so the system path: aviri_server
 from app.api import blueprint
 from controller.image import ImageController
 from common.error import HttpError, exception_handler
@@ -62,12 +62,13 @@ def Home():
 @exception_handler
 def createImage():
     img = g.image.create(request.get_json())  
+    print('img', jsonify(img))
     return jsonify(img), 200
 
 
 @blueprint.route('/v1/image', methods=['GET'])  
 @exception_handler
-def get_images():
+def queryImages():
     imgs = g.image.query(request.args.to_dict())  
     return jsonify(imgs), 200
 
@@ -85,14 +86,14 @@ def getImageById(id):
 
 @blueprint.route('/v1/image/<id>', methods=['DELETE'])  
 @exception_handler
-def delete_image(id):
+def deleteImage(id): 	
     g.image.delete(id)
     return "", 200
 
 
 @blueprint.route('/v1/image/download/<image_id>', methods=['GET'])    
 @exception_handler 
-def download_image(image_id):
+def downloadImage(image_id):
     aim_dir = os.path.join(os.environ['INPUT_DIR'], image_id)
     for filename in os.listdir(aim_dir):
         aim_path = os.path.join(aim_dir, filename)
@@ -100,6 +101,8 @@ def download_image(image_id):
         img_str = image_to_str(img)
         
         return jsonify({'image_content': img_str}), 200
+    if not os.path.exists(aim_dir):
+        raise HttpError('No Image Found', 404)
 
 
 @blueprint.route('/v1/prediction/<id>/<model_name>', methods=['GET'])
@@ -119,8 +122,11 @@ def generatePrediction(id, model_name):
 
 @blueprint.route('/v1/heatmap/download/<heatmap_name_id>', methods=['GET'])   
 @exception_handler 
-def download_heatmap(heatmap_name_id):
+def downloadHeatmap(heatmap_name_id):
     aim_dir = os.path.join(os.environ['HEATMAP_DIR'], heatmap_name_id)
+    if not os.path.exists(aim_dir):
+        raise HttpError('No Heatmap_image Found', 404)
+
     for filename in os.listdir(aim_dir):
         aim_path = os.path.join(aim_dir, filename)
         img = Image.open(aim_path).convert('RGB')

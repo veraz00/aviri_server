@@ -117,7 +117,7 @@ def get_heatmap(model, imgs, class_val, resize, filename):
 
     # 0.4 here is a heatmap intensity factor
     superimposed_img = heatmap * 0.4 + img
-    print('heatmap', superimposed_img.shape)
+    # print('heatmap', superimposed_img.shape)
 
     # final_img = np.concatenate((img, superimposed_img), axis=1)
     # Save the image to disk
