@@ -1,6 +1,8 @@
 # Aviri_server
 This is an ai_server to provide VI disease prediction based on VI_CNN model.
 
+![](workflow.png)
+
 ## Video
 Prediction video link on mac: https://youtu.be/wCux6Mj-iRU
 
