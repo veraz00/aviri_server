@@ -1,6 +1,11 @@
 # Aviri_server
 This is an ai_server to provide VI disease prediction based on VI_CNN model.
 
+## Video
+Prediction video link on mac: https://youtu.be/wCux6Mj-iRU
+
+Prediction video link on Retina camera: https://youtu.be/RCITFbTv_nk
+
 ## Folder structure
 ai: ai model <br>
 samples: 20 images is downloaded from kaggle dataset; the other 5 images are from Retina camera
